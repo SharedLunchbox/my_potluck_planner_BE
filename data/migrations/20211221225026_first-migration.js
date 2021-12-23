@@ -28,12 +28,23 @@ exports.up = function (knex) {
       guests.string('first', 128).notNullable();
       guests.string('last', 128).notNullable();
       guests.string('email', 256).notNullable();
-      guests
+    })
+    .createTable('potluck_guests', (pg) => {
+      pg.increments('pg_id');
+      pg
         .integer('potluck_id')
         .unsigned()
         .notNullable()
         .references('potluck_id')
         .inTable('potlucks')
+        .onUpdate('RESTRICT')
+        .onDelete('RESTRICT');
+      pg
+        .integer('guest_id')
+        .unsigned()
+        .notNullable()
+        .references('guest_id')
+        .inTable('guests')
         .onUpdate('RESTRICT')
         .onDelete('RESTRICT');
     })
